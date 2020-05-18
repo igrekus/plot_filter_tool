@@ -1,6 +1,7 @@
 import pandas as pd
 
 from PyQt5.QtCore import QObject, pyqtSignal
+from scipy.signal import savgol_filter
 
 
 class PlotModel(QObject):
@@ -56,6 +57,10 @@ class PlotModel(QObject):
     def yLabel(self, value):
         self._yLabel = value
         self._ys = list(self._df[self._yLabel])
+        self._updateFilter()
+
+    def _updateFilter(self):
+        self._filteredYs = savgol_filter(self._ys, 9, 3)
 
     @property
     def xs(self):
@@ -67,4 +72,4 @@ class PlotModel(QObject):
 
     @property
     def filteredYs(self):
-        return list(reversed(self.ys))
+        return self._filteredYs

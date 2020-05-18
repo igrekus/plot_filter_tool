@@ -22,8 +22,8 @@ class PrimaryPlotWidget(QWidget):
 
     def _init(self):
         self._plot.subplots_adjust(bottom=0.150)
-        self._plot.set_xlabel('xs', labelpad=-2)
-        self._plot.set_ylabel('ys', labelpad=-2)
+        self._plot.set_xlabel(self._model.xLabel)
+        self._plot.set_ylabel(self._model.yLabel)
         self._plot.grid(b=True, which='major', color='0.5', linestyle='-')
 
     def clear(self):

@@ -36,7 +36,6 @@ class MainWindow(QMainWindow):
     @pyqtSlot()
     def on_btnOpenFile_clicked(self):
         fn = self._getFileName()
-        print(fn)
         if fn:
             self._ui.editFileName.setText(fn)
             self._plotModel.openExcel(fn)

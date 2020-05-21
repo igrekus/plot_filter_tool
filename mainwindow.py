@@ -66,3 +66,29 @@ class MainWindow(QMainWindow):
         if not (self._ui.listXs.selectionModel().hasSelection() and self._ui.listYs.selectionModel().hasSelection()):
             return
         self._plotWidget.plot()
+
+    @pyqtSlot(int)
+    def on_spinWindow_valueChanged(self, _):
+        self._updateFilter()
+
+    @pyqtSlot(int)
+    def on_spinPoly_valueChanged(self, _):
+        self._updateFilter()
+
+    @pyqtSlot(int)
+    def on_spinDeriv_valueChanged(self, _):
+        self._updateFilter()
+
+    @pyqtSlot(float)
+    def on_spinDelta_valueChanged(self, _):
+        self._updateFilter()
+
+    def _updateFilter(self):
+        flt = {
+            'window': self._ui.spinWindow.value(),
+            'poly': self._ui.spinPoly.value(),
+            'deriv': self._ui.spinDeriv.value(),
+            'delta': self._ui.spinDelta.value()
+        }
+
+        print(flt)

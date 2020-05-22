@@ -19,6 +19,13 @@ class PlotModel(QObject):
         self._ys = list()
         self._filteredYs = list()
 
+        self._filter = {
+            'window': 9,
+            'poly': 3,
+            'deriv': 0,
+            'delta': 1.0
+        }
+
     def openExcel(self, file):
         print(f'load dataset{file}')
         self._currentFile = file
@@ -57,10 +64,14 @@ class PlotModel(QObject):
     def yLabel(self, value):
         self._yLabel = value
         self._ys = list(self._df[self._yLabel])
-        self._updateFilter()
+        self._updateFilter(self._filter)
 
-    def _updateFilter(self):
-        self._filteredYs = savgol_filter(self._ys, 9, 3)
+    def _updateFilter(self, params: dict):
+        self._filter = params
+        window, poly, deriv, delta = params.values()
+        if not self._ys:
+            return
+        self._filteredYs = savgol_filter(self._ys, window_length=window, polyorder=poly, deriv=deriv, delta=delta)
 
     @property
     def xs(self):

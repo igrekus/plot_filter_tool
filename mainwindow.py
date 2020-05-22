@@ -6,6 +6,11 @@ from plotmodel import PlotModel
 from primaryplotwidget import PrimaryPlotWidget
 
 
+
+def is_even(value):
+    return value % 2 == 0
+
+
 class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
@@ -68,7 +73,9 @@ class MainWindow(QMainWindow):
         self._plotWidget.plot()
 
     @pyqtSlot(int)
-    def on_spinWindow_valueChanged(self, _):
+    def on_spinWindow_valueChanged(self, value):
+        if value % 2 == 0:
+            self._ui.spinWindow.setValue(value + 1)
         self._updateFilter()
 
     @pyqtSlot(int)
@@ -84,11 +91,24 @@ class MainWindow(QMainWindow):
         self._updateFilter()
 
     def _updateFilter(self):
-        flt = {
-            'window': self._ui.spinWindow.value(),
-            'poly': self._ui.spinPoly.value(),
-            'deriv': self._ui.spinDeriv.value(),
-            'delta': self._ui.spinDelta.value()
-        }
+        window = self._ui.spinWindow.value()
+        poly = self._ui.spinPoly.value()
+        deriv = self._ui.spinDeriv.value()
+        delta = self._ui.spinDelta.value()
 
-        print(flt)
+        self._updateWidgetLimits(window, poly, deriv, delta)
+
+        self._plotModel._updateFilter(params={
+            'window': window,
+            'poly': poly,
+            'deriv': deriv,
+            'delta': delta
+        })
+        self._updatePlot()
+
+    def _updateWidgetLimits(self, window, poly, deriv, delta):
+        x_len = len(self._plotModel.xs)
+        self._ui.spinWindow.setMinimum(poly + 1 if is_even(poly) else poly + 2)
+        self._ui.spinWindow.setMaximum(x_len - 1 if is_even(x_len) else x_len - 2)
+
+        self._ui.spinPoly.setMaximum(window - 1)

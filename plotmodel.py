@@ -1,3 +1,7 @@
+import datetime
+import os
+import subprocess
+
 import pandas as pd
 
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -84,3 +88,12 @@ class PlotModel(QObject):
     @property
     def filteredYs(self):
         return self._filteredYs
+
+    def exportExcel(self):
+        if len(self._filteredYs) == 0:
+            return
+        os.makedirs('export', exist_ok=True)
+        self._df['filter'] = list(self._filteredYs)
+        self._df.to_excel(f'export/filtered-{datetime.datetime.now().isoformat().replace(":", "-")}.xlsx')
+
+        subprocess.Popen('explorer "export')

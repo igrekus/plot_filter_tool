@@ -112,3 +112,7 @@ class MainWindow(QMainWindow):
         self._ui.spinWindow.setMaximum(x_len - 1 if is_even(x_len) else x_len - 2)
 
         self._ui.spinPoly.setMaximum(window - 1)
+
+    @pyqtSlot()
+    def on_btnSaveExcel_clicked(self):
+        self._plotModel.exportExcel()

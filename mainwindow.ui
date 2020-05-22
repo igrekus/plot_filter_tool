@@ -161,6 +161,13 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="btnSaveExcel">
+           <property name="text">
+            <string>Экспорт в .xlsx</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
